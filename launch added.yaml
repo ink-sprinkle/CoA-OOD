@@ -1,0 +1,31 @@
+
+# obstacle / stress test settings
+obstacle_test: false
+obstacle_num_min: 1
+obstacle_num_max: 3
+obstacle_table_z: 0.75
+#obstacle_size: [0.15, 0.15, 0.20]
+obstacle_size: [0.05, 0.05, 0.10]
+eval_repeats_per_episode: 1
+
+# augmentation settings
+use_augmentation: false  
+
+
+# router settings (for eval_switch.py)
+router:
+  removal_snapshot: "scripts/checkpoint/remove.pt"
+  push_snapshot: "scripts/checkpoint/push.pt"
+  button_name: push_button_target
+  cup_names: ["Cup1", "Cup_block"]
+  clear_radius: 0.12
+  verbose: true
+  #switch_clear_frames: 5
+  min_dwell_steps: 10
+  priority_names: ["Cup_block"]
+  center_clear_radius: 0.12
+  z_tol: 0.15
+  priority_z_tol: 0.20
+
+
+
