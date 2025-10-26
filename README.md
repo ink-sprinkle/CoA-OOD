@@ -4,7 +4,7 @@ Chain-of-action with ood test and approach to improvement
 ## Experimental Environment
 The project was reproduced locally following the setup instructions from the official [Chain-of-Action repository](https://github.com/ByteDance-Seed/Chain-of-Action).  
 The actual hardware and software configurations used in this experiment are listed below.
-
+```bash
 | Component | Specification |
 GPU	          Nvidia RTX 3080 Laptop GPU (16 GB VRAM)
 CPU	          AMD Ryzen 9 5900HX
@@ -15,7 +15,7 @@ RLBench	      1.2.0
 PyRep	        4.1.0.3
 CoppeliaSim	  v4.1 EDU
 PyTorch	      2.5.1 + cu121
-
+```
 ## Experiment Reproduction under Limited Training
 
 ### Dataset and Tasks
@@ -54,7 +54,7 @@ If needed, adjust the obstacle color in the following line:
 obs.set_color([1.0, 0.2, 0.2])  # Change color if necessary
 ```
 
-###YAML update
+### YAML update
 The file [`launch_added.yaml`](./launch_added.yaml) contains the additional parameters required for Cube-OOD testing (also for all the test below).
 Copy the contents of this file into src/cfgs/launch.yaml in the original CoA repository.
 If necessary, adjust the obstacle size in the configuration:
