@@ -40,3 +40,23 @@ python -m scripts.train \
     vis_every_steps=1000 \
     save_every_steps=1000 \
     num_eval_episodes=12
+
+## OOD (Cube) Evaluation
+
+### Code update
+The file [`ood_workspace.py`](./ood_workspace.py) contains the additional code used for Cube-OOD testing.  
+To enable obstacle injection during evaluation,  
+copy or update the code in this file into `src/workspace.py` of the original CoA repository  
+(inside the `class WorkSpace` definition).  
+
+If needed, adjust the obstacle color in the following line:  
+```python
+obs.set_color([1.0, 0.2, 0.2])  # Change color if necessary
+
+###YAML update
+The file [`launch_added.yaml`](./launch_added.yaml) contains the additional parameters required for Cube-OOD testing (also for all the test below).
+Copy the contents of this file into src/cfgs/launch.yaml in the original CoA repository.
+If necessary, adjust the obstacle size in the configuration:
+obstacle_size: [0.05, 0.05, 0.10]  # Change size if necessary
+
+
