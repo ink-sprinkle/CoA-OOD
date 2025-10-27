@@ -41,6 +41,22 @@ python -m scripts.train \
     save_every_steps=1000 \
     num_eval_episodes=12
 ```
+## Demos Recording
+The file [`recrord_demos.py`](./record_demos.py) contains the additional code used for Cube-OOD testing.  
+Add this file to the folder src
+And run this file, adjust the number of required demos
+``` python
+total_demos = 200 # change quantity if needed
+```
+for each task applied different RLBench task envirionment setup code
+
+### Push_button task change
+for each sub experiment replace the file `~/your_env_for_RLbench_setup/push_button.py`
+- The file [`push_button_with_cups_no_block.py`](./push_button_with_cups_no_block.py) contains new task description code for OOD (cup) experiment, retrain and reevaluate push_button task (with cups no boock)
+- The file [`push_button_with_cups_1_block_long_task.py`](./ppush_button_with_cups_1_block_long_task.py) contains new task description for cup_removal_then_push retrain and reevaluate experiment
+- The file [`push_button_longtask_switch_cup_removal.py`](./push_button_longtask_switch_cup_removal.py) contains new task description code for push_button_subtask_remov_cup retrain and reevaluate experiment
+- The file [`push_button_with_cups_no_block.py`](./push_button_with_cups_no_block.py) contains new task description code for OOD (cup) experiment, retrain and reevaluate push_button task 
+- The file [`push_button_with_cups_no_block.py`](./push_button_with_cups_no_block.py) contains new task description code for OOD (cup) experiment, retrain and reevaluate push_button task (with cups no boock)
 ## OOD (Cube) Evaluation
 
 ### Code update
@@ -50,7 +66,7 @@ copy or update the code in this file into `src/workspace.py` of the original CoA
 (inside the `class WorkSpace` definition).  
 
 If needed, adjust the obstacle color in the following line:  
-```bash
+```python
 obs.set_color([1.0, 0.2, 0.2])  # Change color if necessary
 ```
 
