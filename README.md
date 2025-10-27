@@ -32,7 +32,7 @@ Key parameters were adjusted as follows:
 
 ```bash
 python -m scripts.train \
-    task=tasj_name \
+    task=task_name \
     num_train_steps=10000 \
     batch_size=32 \
     demos=50 \
@@ -91,7 +91,7 @@ If necessary, adjust the obstacle size in the configuration:
 obstacle_size: [0.05, 0.05, 0.10]  # Change size if necessary
 ```
 ### Evaluation
-Use
+Run the Cube-OOD evaluation:
 ```bash
 python -m scripts.eval task=push_button snapshot=root_to_weight_clean_train.pt +obstacle_test=true
 ```
@@ -108,7 +108,7 @@ The file [`input_perturbation.py`](./input_perturbation.py) contains the additio
 
 Copy the code in this file into `src/dataset/rlbrnch_dataset.py` of the original CoA repository  
 Then run the following command for training:
-```python
+```bash
 python -m scripts.train task=tasj_name num_train_steps=10000 batch_size=32 demos=50 eval_every_steps=1000 vis_every_steps=1000 save_every_steps=1000 num_eval_episodes=12 use_augmentation = true
 ```
 After training, evaluate the model under Cube-OOD conditions:
@@ -117,4 +117,66 @@ python -m scripts.eval task=push_button snapshot=root_to_weight_input_perturbati
 ```
 
 ## Approach 2: OOD to ID transfer
-### 
+### Cups in Environment no Block
+Replace the demos in the folder `data/rlbench/train/push_button/variation0` and `data/rlbench/eval/push_button/variation0` with the generated (or downloaded) demos.
+Replace the task description as 'Task Enivirronment File' said.
+Then run:
+```bash
+python -m scripts.train task=push_button num_train_steps=10000 batch_size=32 demos=50 eval_every_steps=1000 vis_every_steps=1000 save_every_steps=1000 num_eval_episodes=12
+```
+
+### Long Task (Remove then Push)
+The file [`fixed_action_sequence.py`](./fixed_action_sequence.py) contains the additional code used for long-horizon task training.  
+To enable fixed action sequence loading during training,  
+copy or update the code in this file into  
+`src/rlbench_env.py` of the original CoA repository  
+(inside the class `RLBenchEnvFactory(EnvFactory)`,  
+under the function `_load_demos(self, cfg, training=True):`).
+
+This update fixes the `action_sequence` length to the maximum value among recorded episodes,  
+ensuring stable training for long-horizon experiments under limited computational resources  
+(the same method is also applied for switch training).
+
+To adjust the action sequence length, modify the value in  
+`src/cfgs/base/base_configs.yaml`:
+
+```python
+action_sequence: 190  # ActionSequenceWrapper
+```
+Replace the demos in the folder `data/rlbench/train/push_button/variation0` and `data/rlbench/eval/push_button/variation0` with the generated (or downloaded) demos.
+Replace the task description as 'Task Enivirronment File' said.
+Then run the following command for training 3 times:
+```bash
+python -m scripts.train task=tasj_name num_train_steps=40000 batch_size=32 demos=200 eval_every_steps=2000 vis_every_steps=1000 save_every_steps=2000 num_eval_episodes=12
+```
+
+### Switch for removing training
+Replace the demos in the folder `data/rlbench/train/push_button/variation0` and `data/rlbench/eval/push_button/variation0` with the generated (or downloaded) demos.
+Replace the task description as 'Task Enivirronment File' said.
+Then run the following command for training:
+```bash
+python -m scripts.train task=tasj_name num_train_steps=10000 batch_size=32 demos=100 eval_every_steps=1000 vis_every_steps=1000 save_every_steps=1000 num_eval_episodes=12
+```
+
+### Switch for pushing training
+Replace the demos in the folder `data/rlbench/train/push_button/variation0` and `data/rlbench/eval/push_button/variation0` with the generated (or downloaded) demos.
+Replace the task description as 'Task Enivirronment File' said.
+Then run the following command for training:
+```bash
+python -m scripts.train task=tasj_name num_train_steps=20000 batch_size=32 demos=200 eval_every_steps=2000 vis_every_steps=1000 save_every_steps=2000 num_eval_episodes=12
+```
+### Switching Evaluation
+Put the highest success rate for each sub branch training checkpoint in to the folder `srcipts/checkpoint` as `remove.pt` and `push.pt`
+Put the file [`eval_switch.py`](./eval.switch.py) into the folder `srripts`
+Put the file [`router_workspace.py`](./roiter_workspace.py) into the folder `src`
+Replace the demos in the folder`data/rlbench/eval/push_button/variation0` with the generated (or downloaded) demos.
+And run
+```bash
+python -m scripts.eval_switch
+```
+## Sensitivity analysis
+Replace the demos in the folder and `data/rlbench/eval/push_button/variation0` with the generated (or downloaded) demos.
+And run
+```bash
+python -m scripts.eval task=push_button snapshot=root_to_weight_long_task_train.pt
+```
